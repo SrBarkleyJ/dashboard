@@ -1,0 +1,33 @@
+#dashboard-wrapper {
+  height: 100vh;
+  display: flex;
+}
+
+#sidebar {
+  min-height: 100vh;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+  border: none;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #e9ecef;
+  transform: translateX(5px);
+}
+
+.list-group-item.active {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+#page-content {
+  background-color: #8dc6ff89;
+  min-height: 100vh;
+  flex:1;
+    overflow-y: auto;
+    padding:30px;
+}

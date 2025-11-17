@@ -1,0 +1,12 @@
+<h2 class="mb-4">Usuarios</h2>
+
+<div class="users-wrapper">
+ <div class="users-grid">
+  <div *ngFor="let usuario of usuarios" class="user-card">
+    <img [src]="usuario.imagen" class="user-avatar">
+    <div class="user-name">{{ usuario.nombre }}</div>
+    <div class="user-sales">Ventas: {{ usuario.ventas }}</div>
+    <i class="bi bi-graph-up-arrow user-icon"></i>
+  </div>
+</div>
+</div>

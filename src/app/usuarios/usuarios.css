@@ -1,0 +1,56 @@
+.users-wrapper {
+ width: 100%;
+ max-width: 1400px;
+ height: fit-content;
+  margin: 10px auto;
+  padding: 10px;
+   overflow-y: auto; 
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 40px;
+}
+
+/* Card individual en columna */
+.user-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* columna */
+  align-items: center;    /* centra todo horizontalmente */
+  text-align: center;
+  gap: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 350px;
+}
+
+.user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.user-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.user-sales {
+  font-size: 1.3rem;
+  color: #6c757d;
+}
+
+.user-icon {
+  font-size: 1.5rem;
+  color: #198754;
+}

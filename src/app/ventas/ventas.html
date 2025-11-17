@@ -1,0 +1,170 @@
+<div class="ventas-wrapper container-fluid p-4">
+  <h2 class="mb-4">Ventas</h2>
+  
+  <!-- Filtros rápidos -->
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <input type="date" class="form-control" placeholder="Fecha desde">
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control" placeholder="Fecha hasta">
+    </div>
+    <div class="col-md-3">
+      <select class="form-control">
+        <option>Todos los países</option>
+        <option>España</option>
+        <option>México</option>
+        <option>Argentina</option>
+        <option>Colombia</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control">
+        <option>Todos los estados</option>
+        <option>Completado</option>
+        <option>Pendiente</option>
+        <option>Cancelado</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla de ventas -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Historial de Ventas</h5>
+      <span class="badge bg-primary">Total: {{ventas.length}} ventas</span>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID Venta</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Productos</th>
+              <th>País</th>
+              <th>Importe</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of ventas">
+              <td class="fw-bold">#{{venta.id}}</td>
+              <td>{{venta.fecha}}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img [src]="venta.cliente.imagen" class="rounded-circle me-2" width="30" height="30">
+                  {{venta.cliente.nombre}}
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-secondary">{{venta.productos.length}} productos</span>
+              </td>
+              <td>
+                <i class="bi bi-globe me-1"></i>
+                {{venta.pais}}
+              </td>
+              <td class="fw-bold text-success">${{venta.importe}}</td>
+              <td>
+                <span [class]="'badge ' + getEstadoClass(venta.estado)">
+                  {{venta.estado}}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" (click)="verDetalles(venta)">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal personalizado - SIN Bootstrap -->
+<div class="modal-backdrop fade show" *ngIf="mostrarModal"></div>
+<div class="modal fade show d-block" *ngIf="mostrarModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles de Venta #{{ventaSeleccionada?.id}}</h5>
+        <button type="button" class="btn-close" (click)="cerrarModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="ventaSeleccionada">
+        <div class="row">
+          <!-- Información del cliente -->
+          <div class="col-md-6">
+            <h6 class="border-bottom pb-2">Información del Cliente</h6>
+            <div class="d-flex align-items-center mb-3">
+              <img [src]="ventaSeleccionada.cliente.imagen" class="rounded-circle me-3" width="60" height="60">
+              <div>
+                <strong>{{ventaSeleccionada.cliente.nombre}}</strong><br>
+                <small class="text-muted">{{ventaSeleccionada.cliente.email}}</small>
+              </div>
+            </div>
+            <p><i class="bi bi-geo-alt me-2"></i><strong>País:</strong> {{ventaSeleccionada.pais}}</p>
+            <p><i class="bi bi-building me-2"></i><strong>Ciudad:</strong> {{ventaSeleccionada.ciudad}}</p>
+          </div>
+          
+          <!-- Información de la venta -->
+          <div class="col-md-6">
+            <h6 class="border-bottom pb-2">Detalles de la Venta</h6>
+            <p><i class="bi bi-calendar me-2"></i><strong>Fecha:</strong> {{ventaSeleccionada.fecha}}</p>
+            <p><i class="bi bi-info-circle me-2"></i><strong>Estado:</strong> 
+              <span [class]="'badge ' + getEstadoClass(ventaSeleccionada.estado)">
+                {{ventaSeleccionada.estado}}
+              </span>
+            </p>
+            <p><i class="bi bi-credit-card me-2"></i><strong>Método de Pago:</strong> {{ventaSeleccionada.metodoPago}}</p>
+            <p><i class="bi bi-currency-dollar me-2"></i><strong>Total:</strong> 
+              <span class="fw-bold text-success">${{ventaSeleccionada.importe}}</span>
+            </p>
+          </div>
+        </div>
+        
+        <!-- Productos -->
+        <div class="mt-4">
+          <h6 class="border-bottom pb-2">Productos Comprados</h6>
+          <div class="table-responsive">
+            <table class="table table-sm table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Producto</th>
+                  <th class="text-center">Cantidad</th>
+                  <th class="text-end">Precio Unitario</th>
+                  <th class="text-end">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let producto of ventaSeleccionada.productos">
+                  <td>{{producto.nombre}}</td>
+                  <td class="text-center">{{producto.cantidad}}</td>
+                  <td class="text-end">${{producto.precio}}</td>
+                  <td class="text-end">${{(producto.cantidad * producto.precio).toFixed(2)}}</td>
+                </tr>
+              </tbody>
+              <tfoot class="table-active">
+                <tr>
+                  <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                  <td class="text-end"><strong>${{ventaSeleccionada.importe}}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+          <i class="bi bi-x-circle me-1"></i>Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" *ngIf="ventaSeleccionada?.estado === 'Pendiente'">
+          <i class="bi bi-check-circle me-1"></i>Procesar Venta
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

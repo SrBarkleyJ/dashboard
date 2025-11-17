@@ -1,0 +1,100 @@
+.reports-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  height: fit-content;
+  margin: 10px auto;
+  padding: 10px;
+  overflow-y: auto; 
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Reducido a 3 columnas para más espacio */
+  gap: 30px;
+}
+
+/* Card individual con layout horizontal */
+.report-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 0; /* Quitamos padding general para control interno */
+  display: flex;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 200px; /* Altura reducida para formato horizontal */
+  overflow: hidden;
+}
+
+.report-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Sección de la imagen (30-40% izquierdo) */
+.report-image {
+  flex: 0 0 35%; /* Ocupa el 35% del ancho */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.report-image i {
+  font-size: 3.5rem;
+  color: white;
+}
+
+/* Sección de la información (60-70% derecho) */
+.report-info {
+  flex: 0 0 65%; /* Ocupa el 65% restante */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.report-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: #333;
+  margin: 0;
+}
+
+.report-value {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  font-weight: 700;
+  margin: 0;
+}
+
+.report-metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.report-trend {
+  font-size: 1.2rem;
+}
+
+.report-change {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.text-success {
+  color: #198754;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.report-description {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 5px;
+}

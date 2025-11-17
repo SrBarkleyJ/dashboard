@@ -1,0 +1,110 @@
+<div class="productos-wrapper container-fluid p-4">
+  <h2 class="mb-4">Gestión de Productos</h2>
+
+  <!-- Filtros y búsqueda -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Buscar productos...">
+    </div>
+    <div class="col-md-3">
+      <select class="form-control">
+        <option>Todas las categorías</option>
+        <option>Ropa Hombre</option>
+        <option>Ropa Mujer</option>
+        <option>Calzado</option>
+        <option>Accesorios</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control">
+        <option>Todos los estados</option>
+        <option>Disponible</option>
+        <option>Bajo Stock</option>
+        <option>Agotado</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100">
+        <i class="bi bi-plus-circle me-1"></i>Nuevo
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid de productos -->
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let producto of productos">
+      <div class="card product-card h-100">
+        <!-- Imagen del producto -->
+        <div class="product-image position-relative">
+          <img [src]="producto.imagen" class="card-img-top" [alt]="producto.nombre">
+          
+          <!-- Badges -->
+          <div class="position-absolute top-0 start-0 m-2">
+            <span [class]="'badge ' + getEstadoClass(producto.estado)">
+              {{producto.estado}}
+            </span>
+          </div>
+          
+          <!-- Descuento -->
+          <div class="position-absolute top-0 end-0 m-2" *ngIf="producto.precioOriginal">
+            <span class="badge bg-danger">
+              -{{calcularDescuento(producto.precio, producto.precioOriginal)}}%
+            </span>
+          </div>
+
+          <!-- Rating -->
+          <div class="position-absolute bottom-0 start-0 m-2">
+            <span class="badge bg-dark">
+              <i class="bi bi-star-fill text-warning me-1"></i>
+              {{producto.rating}}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-body d-flex flex-column">
+          <!-- Categoría -->
+          <small class="text-muted mb-1">{{producto.categoria}}</small>
+          
+          <!-- Nombre -->
+          <h6 class="card-title">{{producto.nombre}}</h6>
+          
+          <!-- Descripción -->
+          <p class="card-text small text-muted flex-grow-1">{{producto.descripcion}}</p>
+          
+          <!-- Precios -->
+          <div class="mb-2">
+            <span class="h5 text-primary">${{producto.precio}}</span>
+          </div>
+
+          <!-- Información adicional -->
+          <div class="d-flex justify-content-between small text-muted mb-3">
+            <span>
+              <i class="bi bi-box me-1"></i>
+              Stock: {{producto.stock}}
+            </span>
+            <span>
+              <i class="bi bi-cart-check me-1"></i>
+              Vendidos: {{producto.vendidos}}
+            </span>
+          </div>
+
+          <!-- SKU -->
+          <div class="small text-muted mb-3">
+            <i class="bi bi-upc me-1"></i>
+            SKU: {{producto.sku}}
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-pencil me-1"></i>Editar
+            </button>
+            <button class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-trash me-1"></i>Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
