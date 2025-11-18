@@ -1,5 +1,5 @@
 <div class="ventas-wrapper container-fluid p-4">
-  <h2 class="mb-4">Ventas</h2>
+  <h2 class="mb-4 fs-1">Ventas</h2>
   
   <!-- Filtros rápidos -->
   <div class="row mb-3">
@@ -114,8 +114,8 @@
           <div class="col-md-6">
             <h6 class="border-bottom pb-2">Detalles de la Venta</h6>
             <p><i class="bi bi-calendar me-2"></i><strong>Fecha:</strong> {{ventaSeleccionada.fecha}}</p>
-            <p><i class="bi bi-info-circle me-2"></i><strong>Estado:</strong> 
-              <span [class]="'badge ' + getEstadoClass(ventaSeleccionada.estado)">
+            <p><i class="bi bi-info-circle me-2"></i><strong>Estado:     </strong> 
+              <span [class]="'badge ' + getEstadoClass(ventaSeleccionada.estado)" >
                 {{ventaSeleccionada.estado}}
               </span>
             </p>
@@ -128,29 +128,29 @@
         
         <!-- Productos -->
         <div class="mt-4">
-          <h6 class="border-bottom pb-2">Productos Comprados</h6>
+          <h6 class="border-bottom pb-2 fs-4">Productos Comprados</h6>
           <div class="table-responsive">
             <table class="table table-sm table-hover">
               <thead class="table-light">
                 <tr>
-                  <th>Producto</th>
-                  <th class="text-center">Cantidad</th>
-                  <th class="text-end">Precio Unitario</th>
-                  <th class="text-end">Subtotal</th>
+                  <th class='fs-4'>Producto</th>
+                  <th class="text-center fs-4">Cantidad</th>
+                  <th class="text-end fs-4">Precio Unitario</th>
+                  <th class="text-end fs-4">Subtotal</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let producto of ventaSeleccionada.productos">
+                <tr class="text-center fs-5" *ngFor="let producto of ventaSeleccionada.productos">
                   <td>{{producto.nombre}}</td>
-                  <td class="text-center">{{producto.cantidad}}</td>
-                  <td class="text-end">${{producto.precio}}</td>
-                  <td class="text-end">${{(producto.cantidad * producto.precio).toFixed(2)}}</td>
+                  <td class="text-center fs-4">{{producto.cantidad}}</td>
+                  <td class="text-end fs-4">${{producto.precio}}</td>
+                  <td class="text-end fs-4">${{(producto.cantidad * producto.precio).toFixed(2)}}</td>
                 </tr>
               </tbody>
               <tfoot class="table-active">
                 <tr>
-                  <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                  <td class="text-end"><strong>${{ventaSeleccionada.importe}}</strong></td>
+                  <td colspan="3" class="text-end fs-4"><strong>Total:</strong></td>
+                  <td class="text-end fs-4"><strong>${{ventaSeleccionada.importe}}</strong></td>
                 </tr>
               </tfoot>
             </table>

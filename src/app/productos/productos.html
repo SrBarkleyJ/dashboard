@@ -1,5 +1,5 @@
 <div class="productos-wrapper container-fluid p-4">
-  <h2 class="mb-4">Gestión de Productos</h2>
+  <h2 class="mb-4 fs-1">Gestión de Productos</h2>
 
   <!-- Filtros y búsqueda -->
   <div class="row mb-4">
@@ -9,22 +9,17 @@
     <div class="col-md-3">
       <select class="form-control">
         <option>Todas las categorías</option>
-        <option>Ropa Hombre</option>
-        <option>Ropa Mujer</option>
-        <option>Calzado</option>
-        <option>Accesorios</option>
+        <option *ngFor="let cat of categorias">{{cat}}</option>
       </select>
     </div>
     <div class="col-md-3">
       <select class="form-control">
         <option>Todos los estados</option>
-        <option>Disponible</option>
-        <option>Bajo Stock</option>
-        <option>Agotado</option>
+        <option *ngFor="let estado of estados">{{estado}}</option>
       </select>
     </div>
     <div class="col-md-2">
-      <button class="btn btn-primary w-100">
+      <button class="btn btn-primary w-100" (click)="abrirModalNuevo()">
         <i class="bi bi-plus-circle me-1"></i>Nuevo
       </button>
     </div>
@@ -74,6 +69,9 @@
           <!-- Precios -->
           <div class="mb-2">
             <span class="h5 text-primary">${{producto.precio}}</span>
+            <span class="text-muted text-decoration-line-through ms-2 small" *ngIf="producto.precioOriginal">
+              ${{producto.precioOriginal}}
+            </span>
           </div>
 
           <!-- Información adicional -->
@@ -96,14 +94,162 @@
 
           <!-- Botones de acción -->
           <div class="d-grid gap-2">
-            <button class="btn btn-outline-primary btn-sm">
+            <button class="btn btn-outline-primary btn-sm" (click)="abrirModalEditar(producto)">
               <i class="bi bi-pencil me-1"></i>Editar
             </button>
-            <button class="btn btn-outline-danger btn-sm">
+            <button class="btn btn-outline-danger btn-sm" (click)="eliminarProducto(producto)">
               <i class="bi bi-trash me-1"></i>Eliminar
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal del formulario -->
+<div class="modal-backdrop fade show" *ngIf="mostrarModal"></div>
+<div class="modal fade show d-block" *ngIf="mostrarModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{esEdicion ? 'Editar Producto' : 'Nuevo Producto'}}
+        </h5>
+        <button type="button" class="btn-close" (click)="cerrarModal()" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form (ngSubmit)="guardarProducto()">
+          <div class="row">
+            <!-- Columna izquierda -->
+            <div class="col-md-6">
+              <!-- Nombre -->
+              <div class="mb-3">
+                <label class="form-label">Nombre del Producto *</label>
+                <input type="text" class="form-control" 
+                       [(ngModel)]="nuevoProducto.nombre" 
+                       name="nombre" required>
+              </div>
+
+              <!-- Categoría -->
+              <div class="mb-3">
+                <label class="form-label">Categoría</label>
+                <select class="form-control" [(ngModel)]="nuevoProducto.categoria" name="categoria">
+                  <option *ngFor="let cat of categorias" [value]="cat">{{cat}}</option>
+                </select>
+              </div>
+
+              <!-- Precios -->
+              <div class="row">
+                <div class="col-6">
+                  <label class="form-label">Precio Actual *</label>
+                  <input type="number" class="form-control" 
+                         [(ngModel)]="nuevoProducto.precio" 
+                         name="precio" min="0" step="0.01" required>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Precio Original</label>
+                  <input type="number" class="form-control" 
+                         [(ngModel)]="nuevoProducto.precioOriginal" 
+                         name="precioOriginal" min="0" step="0.01">
+                </div>
+              </div>
+
+              <!-- Stock y Estado -->
+              <div class="row">
+                <div class="col-6">
+                  <label class="form-label">Stock</label>
+                  <input type="number" class="form-control" 
+                         [(ngModel)]="nuevoProducto.stock" 
+                         name="stock" min="0">
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Estado</label>
+                  <select class="form-control" [(ngModel)]="nuevoProducto.estado" name="estado">
+                    <option *ngFor="let estado of estados" [value]="estado">{{estado}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="col-md-6">
+              <!-- Imagen -->
+              <div class="mb-3">
+                <label class="form-label">URL de la Imagen *</label>
+                <input type="url" class="form-control" 
+                       [(ngModel)]="nuevoProducto.imagen" 
+                       name="imagen" required>
+                <div class="form-text">
+                  <button type="button" class="btn btn-sm btn-outline-secondary mt-1" 
+                          (click)="generarImagenAleatoria()">
+                    <i class="bi bi-shuffle me-1"></i>Generar imagen de prueba
+                  </button>
+                </div>
+              </div>
+
+              <!-- SKU -->
+              <div class="mb-3">
+                <label class="form-label">SKU</label>
+                <input type="text" class="form-control" 
+                       [(ngModel)]="nuevoProducto.sku" 
+                       name="sku" readonly>
+                <div class="form-text">Código generado automáticamente</div>
+              </div>
+
+              <!-- Rating y Vendidos -->
+              <div class="row">
+                <div class="col-6">
+                  <label class="form-label">Rating</label>
+                  <input type="number" class="form-control" 
+                         [(ngModel)]="nuevoProducto.rating" 
+                         name="rating" min="0" max="5" step="0.1">
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Vendidos</label>
+                  <input type="number" class="form-control" 
+                         [(ngModel)]="nuevoProducto.vendidos" 
+                         name="vendidos" min="0">
+                </div>
+              </div>
+
+              <!-- Fecha -->
+              <div class="mb-3">
+                <label class="form-label">Fecha de Agregado</label>
+                <input type="date" class="form-control" 
+                       [(ngModel)]="nuevoProducto.fechaAgregado" 
+                       name="fechaAgregado">
+              </div>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" rows="3"
+                      [(ngModel)]="nuevoProducto.descripcion" 
+                      name="descripcion"></textarea>
+          </div>
+
+          <!-- Vista previa de la imagen -->
+          <div class="mb-3" *ngIf="nuevoProducto.imagen">
+            <label class="form-label">Vista previa:</label>
+            <div>
+              <img [src]="nuevoProducto.imagen" class="img-thumbnail" style="max-height: 150px;">
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+          <i class="bi bi-x-circle me-1"></i>Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="guardarProducto()">
+          <i class="bi bi-check-circle me-1"></i>
+          {{esEdicion ? 'Actualizar' : 'Crear'}} Producto
+        </button>
       </div>
     </div>
   </div>

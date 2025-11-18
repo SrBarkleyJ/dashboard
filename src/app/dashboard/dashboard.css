@@ -1,6 +1,12 @@
 .dashboard-wrapper {
-  overflow-y: auto;
-  max-height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  height: fit-content;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #efefef00;
+  border-radius: 2%;
 }
 
 .card {

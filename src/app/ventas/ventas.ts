@@ -53,7 +53,7 @@ export class Ventas{
       cliente: {
         nombre: 'Ana García',
         email: 'ana@email.com',
-        imagen: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face'
+        imagen: 'assets/maria.jpg'
       },
       productos: [
         { nombre: 'Camisa Oxford Slim', cantidad: 2, precio: 45.99 },
